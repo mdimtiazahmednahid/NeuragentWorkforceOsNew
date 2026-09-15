@@ -1,0 +1,38 @@
+<flux:dropdown position="bottom" align="start">
+    <div class="size-8 rounded-full overflow-hidden shrink-0 border border-zinc-200 dark:border-zinc-800 cursor-pointer" data-test="sidebar-menu-button">
+        <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : '' }}" class="size-full object-cover {{ !auth()->user()->avatar ? 'hidden' : '' }}" />
+        <flux:avatar :initials="auth()->user()->initials()" class="size-full {{ auth()->user()->avatar ? 'hidden' : '' }}" />
+    </div>
+
+    <flux:menu>
+        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+            <div class="size-8 rounded-full overflow-hidden shrink-0">
+                <img src="{{ auth()->user()->avatar ? Storage::url(auth()->user()->avatar) : '' }}" class="size-full object-cover {{ !auth()->user()->avatar ? 'hidden' : '' }}" />
+                <flux:avatar :name="auth()->user()->name" :initials="auth()->user()->initials()" class="size-full {{ auth()->user()->avatar ? 'hidden' : '' }}" />
+            </div>
+            <div class="grid flex-1 text-start text-sm leading-tight">
+                <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
+            </div>
+        </div>
+        <flux:menu.separator />
+        <flux:menu.radio.group>
+            <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
+                {{ __('Settings') }}
+            </flux:menu.item>
+            <form method="POST" action="{{ route('logout') }}" class="w-full">
+                @csrf
+                <flux:menu.item
+                    as="button"
+                    type="submit"
+                    icon="arrow-right-start-on-rectangle"
+                    class="w-full cursor-pointer"
+                    data-test="logout-button"
+                >
+                    {{ __('Log out') }}
+                </flux:menu.item>
+            </form>
+            <livewire:account-switcher />
+        </flux:menu.radio.group>
+    </flux:menu>
+</flux:dropdown>
